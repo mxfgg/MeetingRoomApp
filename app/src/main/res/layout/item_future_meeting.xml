@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/spacing_large"
+    android:paddingEnd="@dimen/spacing_large"
+    android:paddingTop="@dimen/spacing_medium"
+    android:paddingBottom="@dimen/spacing_medium">
+
+    <TextView
+        android:id="@+id/tv_future_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/meeting_time_placeholder"
+        android:textColor="@color/accent_cyan"
+        android:textSize="@dimen/text_size_body"
+        android:fontFamily="monospace"
+        android:layout_marginEnd="@dimen/spacing_large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.35" />
+
+    <TextView
+        android:id="@+id/tv_future_summary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/meeting_summary_placeholder"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_size_body"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_marginEnd="@dimen/spacing_large"
+        app:layout_constraintStart_toEndOf="@id/tv_future_time"
+        app:layout_constraintEnd_toStartOf="@id/tv_future_applicant"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_future_applicant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/meeting_applicant_placeholder"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/text_size_applicant"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

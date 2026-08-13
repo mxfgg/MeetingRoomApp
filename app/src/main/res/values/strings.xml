@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">会议室门牌</string>
+
+    <!-- 平台选择 -->
+    <string name="select_platform">选择会议平台</string>
+    <string name="platform_feishu">飞书</string>
+    <string name="platform_outlook">Outlook</string>
+
+    <!-- 配置页 -->
+    <string name="config_title">系统配置</string>
+    <string name="config_hint_default">请输入应用配置信息</string>
+    <string name="config_hint_feishu">请输入飞书应用配置信息以启用电子门牌</string>
+    <string name="config_hint_outlook">请输入Azure(Outlook)应用配置信息以启用电子门牌</string>
+    <string name="config_save">保存配置</string>
+    <string name="config_validating">正在验证凭据…</string>
+    <string name="config_err_invalid">凭据无效，请检查 App ID / Secret 等参数</string>
+    <string name="config_err_network">网络连接失败，请检查网络后重试</string>
+    <string name="config_err_room_feishu">会议室配置有误，请检查会议室ID</string>
+    <string name="config_err_room_outlook">会议室配置有误，请检查邮箱地址</string>
+    <string name="config_err_default">验证失败</string>
+    <string name="hint_app_id">APP_ID (cli_ 开头)</string>
+    <string name="hint_app_secret">APP_SECRET</string>
+    <string name="hint_room_id">ROOM_ID (omm_ 开头)</string>
+    <string name="hint_client_id">CLIENT_ID (UUID格式)</string>
+    <string name="hint_client_secret">CLIENT_SECRET</string>
+    <string name="hint_tenant_id">TENANT_ID (UUID格式)</string>
+    <string name="hint_room_email">ROOM_EMAIL (会议室邮箱)</string>
+
+    <!-- 主界面 -->
+    <string name="room_name">会议室</string>
+    <string name="time_placeholder">00:00</string>
+    <string name="status_meeting">会议中</string>
+    <string name="status_free">空闲</string>
+    <string name="status_booked">已预约</string>
+    <string name="status_network_error">网络异常</string>
+    <string name="status_auth_error">认证失败</string>
+    <string name="status_no_data">暂无预约信息</string>
+    <string name="current_free">当前空闲</string>
+    <string name="check_config">请检查配置</string>
+    <string name="quick_book">快速预约</string>
+    <string name="next_meeting_prefix">下一场 ▸ </string>
+    <string name="meeting_in_progress">● 会议进行中</string>
+    <string name="meeting_summary_placeholder">会议主题</string>
+    <string name="meeting_time_placeholder">00:00 ~ 00:00</string>
+    <string name="meeting_applicant_placeholder">申请人</string>
+    <string name="toast_network_error">网络故障，请稍后再试</string>
+    <string name="toast_book_success">预约成功！</string>
+
+    <!-- 通用 -->
+    <string name="anonymous">匿名</string>
+    <string name="no_summary">无主题</string>
+    <string name="quick_book_summary">【自动创建】临时会议</string>
+    <string name="quick_book_description">这是一场通过电子门牌自动创建的快速会议。</string>
+
+    <!-- 校验错误 -->
+    <string name="err_app_id_empty">APP_ID不能为空</string>
+    <string name="err_app_id_prefix">APP_ID需以"cli_"开头</string>
+    <string name="err_app_secret_empty">APP_SECRET不能为空</string>
+    <string name="err_app_secret_short">APP_SECRET至少10个字符</string>
+    <string name="err_room_id_empty">ROOM_ID不能为空</string>
+    <string name="err_room_id_prefix">ROOM_ID需以"omm_"开头</string>
+    <string name="err_client_id_empty">CLIENT_ID不能为空</string>
+    <string name="err_client_id_format">CLIENT_ID格式错误，应为UUID格式</string>
+    <string name="err_client_secret_empty">CLIENT_SECRET不能为空</string>
+    <string name="err_client_secret_short">CLIENT_SECRET至少10个字符</string>
+    <string name="err_tenant_id_empty">TENANT_ID不能为空</string>
+    <string name="err_tenant_id_format">TENANT_ID格式错误，应为UUID格式</string>
+    <string name="err_room_email_empty">ROOM_EMAIL不能为空</string>
+    <string name="err_room_email_format">ROOM_EMAIL格式错误，应为有效的邮箱地址</string>
+</resources>

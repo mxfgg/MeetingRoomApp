@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_size_title">48sp</dimen>
+    <dimen name="text_size_current_meeting">36sp</dimen>
+    <dimen name="text_size_time">28sp</dimen>
+    <dimen name="text_size_subtitle">24sp</dimen>
+    <dimen name="text_size_body">24sp</dimen>
+    <dimen name="text_size_applicant">20sp</dimen>
+    <dimen name="text_size_hint">16sp</dimen>
+    <dimen name="text_size_free_status">42sp</dimen>
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_medium">16dp</dimen>
+    <dimen name="spacing_large">24dp</dimen>
+    <dimen name="corner_radius">16dp</dimen>
+    <dimen name="corner_radius_small">8dp</dimen>
+    <dimen name="button_width">240dp</dimen>
+    <dimen name="button_height">80dp</dimen>
+    <dimen name="indicator_width">6dp</dimen>
+    <dimen name="status_bar_height">56dp</dimen>
+</resources>

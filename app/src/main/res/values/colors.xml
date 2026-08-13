@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_primary">#0a0e1a</color>
+    <color name="bg_card">#16213e</color>
+    <color name="bg_card_alt">#0f1525</color>
+    <color name="bg_card_alt2">#121a2e</color>
+    <color name="accent_cyan">#00d4ff</color>
+    <color name="accent_cyan_dark">#0099cc</color>
+    <color name="text_primary">#ffffff</color>
+    <color name="text_secondary">#a0a0b0</color>
+    <color name="status_free">#00c853</color>
+    <color name="status_free_dim">#4CAF50</color>
+    <color name="status_warning">#ff9800</color>
+    <color name="status_error">#f44336</color>
+    <color name="card_border">#1a3a5c</color>
+    <color name="input_bg">#16213e</color>
+    <color name="input_border">#ffffff</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_card"
+    android:paddingStart="@dimen/spacing_large"
+    android:paddingEnd="@dimen/spacing_large"
+    android:paddingTop="@dimen/spacing_medium"
+    android:paddingBottom="@dimen/spacing_medium">
+
+    <View
+        android:id="@+id/indicator_current"
+        android:layout_width="@dimen/indicator_width"
+        android:layout_height="0dp"
+        android:background="@color/accent_cyan"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_current_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_large"
+        android:text="@string/meeting_in_progress"
+        android:textColor="@color/accent_cyan"
+        android:textSize="@dimen/text_size_hint"
+        app:layout_constraintStart_toEndOf="@id/indicator_current"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_current_summary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_large"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:text="@string/meeting_summary_placeholder"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_size_current_meeting"
+        android:textStyle="bold"
+        android:maxLines="2"
+        android:ellipsize="end"
+        app:layout_constraintStart_toEndOf="@id/indicator_current"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_current_label" />
+
+    <TextView
+        android:id="@+id/tv_current_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_large"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:text="@string/meeting_time_placeholder"
+        android:textColor="@color/accent_cyan"
+        android:textSize="@dimen/text_size_time"
+        android:fontFamily="monospace"
+        app:layout_constraintStart_toEndOf="@id/indicator_current"
+        app:layout_constraintTop_toBottomOf="@id/tv_current_summary" />
+
+    <TextView
+        android:id="@+id/tv_current_applicant"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_large"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:text="@string/meeting_applicant_placeholder"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/text_size_applicant"
+        app:layout_constraintStart_toEndOf="@id/indicator_current"
+        app:layout_constraintTop_toBottomOf="@id/tv_current_time" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

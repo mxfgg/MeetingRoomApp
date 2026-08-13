@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/bg_primary">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_medium">
+
+        <TextView
+            android:id="@+id/tv_config_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/config_title"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_size_subtitle"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/spacing_medium" />
+
+        <TextView
+            android:id="@+id/tv_config_hint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/config_hint_default"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_size_hint"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/tv_config_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/spacing_small" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_app_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:hint="@string/hint_app_id"
+            android:visibility="gone"
+            app:hintTextColor="@color/accent_cyan"
+            app:boxBackgroundColor="@color/bg_card"
+            app:boxStrokeColor="@color/accent_cyan"
+            app:errorTextColor="@color/status_error"
+            app:layout_constraintTop_toBottomOf="@id/tv_config_hint"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.7">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_app_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_size_hint"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_app_secret"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:hint="@string/hint_app_secret"
+            android:visibility="gone"
+            app:hintTextColor="@color/accent_cyan"
+            app:boxBackgroundColor="@color/bg_card"
+            app:boxStrokeColor="@color/accent_cyan"
+            app:errorTextColor="@color/status_error"
+            app:passwordToggleEnabled="true"
+            app:layout_constraintTop_toBottomOf="@id/til_app_id"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.7">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_app_secret"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_size_hint"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_room_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:hint="@string/hint_room_id"
+            android:visibility="gone"
+            app:hintTextColor="@color/accent_cyan"
+            app:boxBackgroundColor="@color/bg_card"
+            app:boxStrokeColor="@color/accent_cyan"
+            app:errorTextColor="@color/status_error"
+            app:layout_constraintTop_toBottomOf="@id/til_app_secret"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.7">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_room_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_size_hint"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_client_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:hint="@string/hint_client_id"
+            android:visibility="gone"
+            app:hintTextColor="@color/accent_cyan"
+            app:boxBackgroundColor="@color/bg_card"
+            app:boxStrokeColor="@color/accent_cyan"
+            app:errorTextColor="@color/status_error"
+            app:errorIconTint="@color/status_error"
+            app:layout_constraintTop_toBottomOf="@id/tv_config_hint"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.7">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_client_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_size_hint"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_client_secret"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:hint="@string/hint_client_secret"
+            android:visibility="gone"
+            app:hintTextColor="@color/accent_cyan"
+            app:boxBackgroundColor="@color/bg_card"
+            app:boxStrokeColor="@color/accent_cyan"
+            app:errorTextColor="@color/status_error"
+            app:passwordToggleEnabled="true"
+            app:layout_constraintTop_toBottomOf="@id/til_client_id"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.7">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_client_secret"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_size_hint"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_tenant_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:hint="@string/hint_tenant_id"
+            android:visibility="gone"
+            app:hintTextColor="@color/accent_cyan"
+            app:boxBackgroundColor="@color/bg_card"
+            app:boxStrokeColor="@color/accent_cyan"
+            app:errorTextColor="@color/status_error"
+            app:errorIconTint="@color/status_error"
+            app:layout_constraintTop_toBottomOf="@id/til_client_secret"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.7">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_tenant_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_size_hint"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_room_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:hint="@string/hint_room_email"
+            android:visibility="gone"
+            app:hintTextColor="@color/accent_cyan"
+            app:boxBackgroundColor="@color/bg_card"
+            app:boxStrokeColor="@color/accent_cyan"
+            app:errorTextColor="@color/status_error"
+            app:errorIconTint="@color/status_error"
+            app:layout_constraintTop_toBottomOf="@id/til_tenant_id"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.7">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_room_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_size_hint"
+                android:inputType="textEmailAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_config_fields"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="til_app_id,til_app_secret,til_room_id,til_client_id,til_client_secret,til_tenant_id,til_room_email" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save_config"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:text="@string/config_save"
+            android:textColor="@color/bg_primary"
+            android:textSize="@dimen/text_size_hint"
+            android:textStyle="bold"
+            android:background="@drawable/bg_button_config"
+            app:backgroundTint="@null"
+            app:cornerRadius="@dimen/corner_radius"
+            app:layout_constraintTop_toBottomOf="@id/barrier_config_fields"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_config_error"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:gravity="center"
+            android:textColor="@color/status_error"
+            android:textSize="@dimen/text_size_hint"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/btn_save_config"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
