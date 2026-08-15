@@ -47,7 +47,7 @@ public class MeetingInfoTest {
     @Test
     public void isCurrentMeeting_beforeStart_notCurrent() {
         long now = System.currentTimeMillis();
-        MeetingInfo m = MeetingInfo.fromTimestamps("uid-6", now + 60_000L, now + 3600_000L, "王五", "未来会议");
+        MeetingInfo m = MeetingInfo.fromTimestamps("uid-6", now + 120_000L, now + 3600_000L, "王五", "未来会议");
         assertFalse(m.isCurrentMeeting());
     }
 
