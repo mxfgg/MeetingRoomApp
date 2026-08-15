@@ -45,6 +45,7 @@
     <string name="meeting_applicant_placeholder">申请人</string>
     <string name="toast_network_error">网络故障，请稍后再试</string>
     <string name="toast_book_success">预约成功！</string>
+    <string name="toast_book_conflict">当前时段已有预约，无法快速预约</string>
 
     <!-- 通用 -->
     <string name="anonymous">匿名</string>

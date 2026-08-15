@@ -20,6 +20,7 @@ public class PlatformSelectActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        new CrashHandler(this).register();
         setupFullScreen();
         setContentView(R.layout.activity_platform_select);
         configManager = new ConfigManager(this);

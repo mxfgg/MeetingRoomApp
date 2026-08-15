@@ -40,7 +40,7 @@ public class ConfigActivity extends AppCompatActivity {
         configManager = new ConfigManager(this);
         String platformStr = getIntent().getStringExtra("platform");
         if (platformStr == null) { startActivity(new Intent(this, PlatformSelectActivity.class)); finish(); return; }
-        platform = Platform.valueOf(platformStr);
+        try { platform = Platform.valueOf(platformStr); } catch (IllegalArgumentException e) { startActivity(new Intent(this, PlatformSelectActivity.class)); finish(); return; }
         initViews();
         setupPlatformFields();
     }
@@ -98,7 +98,7 @@ public class ConfigActivity extends AppCompatActivity {
         MeetingApi api = platform == Platform.FEISHU ? new FeishuMeetingApi(configManager) : new OutlookMeetingApi(configManager);
         api.fetchMeetings(new ApiCallback<List<MeetingInfo>>() {
             @Override public void onSuccess(List<MeetingInfo> meetings) { runOnUiThread(() -> { startActivity(new Intent(ConfigActivity.this, MainActivity.class)); finish(); }); }
-            @Override public void onFailure(String msg) { runOnUiThread(() -> { configManager.clearConfig(); btnSave.setEnabled(true); tvConfigError.setTextColor(getColor(R.color.status_error)); tvConfigError.setText(formatError(msg)); tvConfigError.setVisibility(android.view.View.VISIBLE); }); }
+            @Override public void onFailure(String msg) { runOnUiThread(() -> { btnSave.setEnabled(true); tvConfigError.setTextColor(getColor(R.color.status_error)); tvConfigError.setText(formatError(msg)); tvConfigError.setVisibility(android.view.View.VISIBLE); }); }
         });
     }
 

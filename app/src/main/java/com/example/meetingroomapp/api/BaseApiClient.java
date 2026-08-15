@@ -29,6 +29,7 @@ public abstract class BaseApiClient {
             @Override public void onResponse(Call call, Response response) throws IOException {
                 String body = response.body() != null ? response.body().string() : "";
                 if (response.isSuccessful()) mainHandler.post(() -> callback.onSuccess(body));
+                else if (response.code() == 401 || response.code() == 403) { invalidateToken(); mainHandler.post(() -> callback.onFailure("认证失败: HTTP " + response.code())); }
                 else if (retry < AppConfig.MAX_RETRY_COUNT && response.code() >= 500) mainHandler.postDelayed(() -> retryInternal(original, callback, retry + 1), RETRY_DELAYS[Math.min(retry, RETRY_DELAYS.length - 1)]);
                 else mainHandler.post(() -> callback.onFailure("API错误(" + response.code() + "): " + body));
             }

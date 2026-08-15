@@ -155,6 +155,7 @@ public class ConfigManager {
                 if (!validateOutlook(clientId, clientSecret, tenantId, roomEmail).isValid()) return LoadResult.err(ErrorType.VALIDATION_FAILED, "配置格式校验失败");
                 config.setClientId(clientId); config.setClientSecret(clientSecret); config.setTenantId(tenantId); config.setRoomEmail(roomEmail);
             }
+            config.setRoomName(optStr(json, AppConfig.KEY_ROOM_NAME));
             cachedConfig = config;
             return LoadResult.ok(cachedConfig);
         } catch (JsonSyntaxException e) { return LoadResult.err(ErrorType.JSON_PARSE_ERROR, "配置文件JSON格式错误");
@@ -171,7 +172,8 @@ public class ConfigManager {
         JsonObject json = new JsonObject();
         json.addProperty(AppConfig.KEY_PLATFORM, Platform.FEISHU.name());
         json.addProperty(AppConfig.KEY_APP_ID, appId); json.addProperty(AppConfig.KEY_APP_SECRET, encSecret); json.addProperty(AppConfig.KEY_ROOM_ID, roomId);
-        return saveConfig(json, () -> { cachedConfig = new AppConfig(Platform.FEISHU); cachedConfig.setAppId(appId); cachedConfig.setAppSecret(appSecret); cachedConfig.setRoomId(roomId); });
+        String rn = cachedConfig != null ? cachedConfig.getRoomName() : null; if (rn != null) json.addProperty(AppConfig.KEY_ROOM_NAME, rn);
+        return saveConfig(json, () -> { cachedConfig = new AppConfig(Platform.FEISHU); cachedConfig.setAppId(appId); cachedConfig.setAppSecret(appSecret); cachedConfig.setRoomId(roomId); if (rn != null) cachedConfig.setRoomName(rn); });
     }
 
     public synchronized SaveResult saveOutlookConfig(String clientId, String clientSecret, String tenantId, String roomEmail) {
@@ -182,7 +184,8 @@ public class ConfigManager {
         JsonObject json = new JsonObject();
         json.addProperty(AppConfig.KEY_PLATFORM, Platform.OUTLOOK.name());
         json.addProperty(AppConfig.KEY_CLIENT_ID, clientId); json.addProperty(AppConfig.KEY_CLIENT_SECRET, encSecret); json.addProperty(AppConfig.KEY_TENANT_ID, tenantId); json.addProperty(AppConfig.KEY_ROOM_EMAIL, roomEmail);
-        return saveConfig(json, () -> { cachedConfig = new AppConfig(Platform.OUTLOOK); cachedConfig.setClientId(clientId); cachedConfig.setClientSecret(clientSecret); cachedConfig.setTenantId(tenantId); cachedConfig.setRoomEmail(roomEmail); });
+        String rn = cachedConfig != null ? cachedConfig.getRoomName() : null; if (rn != null) json.addProperty(AppConfig.KEY_ROOM_NAME, rn);
+        return saveConfig(json, () -> { cachedConfig = new AppConfig(Platform.OUTLOOK); cachedConfig.setClientId(clientId); cachedConfig.setClientSecret(clientSecret); cachedConfig.setTenantId(tenantId); cachedConfig.setRoomEmail(roomEmail); if (rn != null) cachedConfig.setRoomName(rn); });
     }
 
     private SaveResult saveConfig(JsonObject json, Runnable cacheUpdater) {
@@ -201,6 +204,8 @@ public class ConfigManager {
     public String getClientSecret() { return cachedConfig != null ? cachedConfig.getClientSecret() : null; }
     public String getTenantId() { return cachedConfig != null ? cachedConfig.getTenantId() : null; }
     public String getRoomEmail() { return cachedConfig != null ? cachedConfig.getRoomEmail() : null; }
+    public String getRoomName() { return cachedConfig != null ? cachedConfig.getRoomName() : null; }
+    public void setRoomName(String name) { if (cachedConfig != null) cachedConfig.setRoomName(name); }
     public boolean isConfigReady() { return cachedConfig != null; }
-    public synchronized void clearConfig() { cachedConfig = null; File file = new File(context.getFilesDir(), AppConfig.CONFIG_FILE_NAME); if (file.exists()) file.delete(); }
+    public synchronized void clearConfig() { cachedConfig = null; File file = new File(context.getFilesDir(), AppConfig.CONFIG_FILE_NAME); if (file.exists()) file.delete(); prefs.edit().remove(AppConfig.PLATFORM_KEY).apply(); }
 }

@@ -46,12 +46,25 @@ public class OutlookMeetingApi extends BaseApiClient implements MeetingApi {
             String end = isoFmt.format(cal.getTime());
             try {
                 String path = "/users/" + URLEncoder.encode(roomEmail, "UTF-8") + "/calendarView?startDateTime=" + URLEncoder.encode(start, "UTF-8") + "&endDateTime=" + URLEncoder.encode(end, "UTF-8");
-                get(path, token, new ApiCallback<String>() {
-                    @Override public void onSuccess(String result) { try { JsonObject json = JsonParser.parseString(result).getAsJsonObject(); if (json.has("error")) { callback.onFailure("日历查询失败: " + (json.getAsJsonObject("error").has("message") ? json.getAsJsonObject("error").get("message").getAsString() : "查询失败")); return; } callback.onSuccess(parseCalendarEvents(json)); } catch (Exception e) { callback.onFailure("解析日历数据失败"); } }
-                    @Override public void onFailure(String msg) { callback.onFailure(msg); }
-                });
+                fetchAllPages(path, token, new ArrayList<>(), callback);
             } catch (Exception e) { callback.onFailure("构建请求URL失败: " + e.getMessage()); }
         }, msg -> callback.onFailure(msg));
+    }
+
+    private void fetchAllPages(String path, String token, List<MeetingInfo> accumulated, ApiCallback<List<MeetingInfo>> callback) {
+        get(path, token, new ApiCallback<String>() {
+            @Override public void onSuccess(String result) {
+                try {
+                    JsonObject json = JsonParser.parseString(result).getAsJsonObject();
+                    if (json.has("error")) { callback.onFailure("日历查询失败: " + (json.getAsJsonObject("error").has("message") ? json.getAsJsonObject("error").get("message").getAsString() : "查询失败")); return; }
+                    accumulated.addAll(parseCalendarEvents(json));
+                    String nextLink = json.has("@odata.nextLink") ? json.get("@odata.nextLink").getAsString() : null;
+                    if (nextLink != null && !nextLink.isEmpty()) { fetchAllPages(nextLink.replace(AppConfig.GRAPH_BASE_URL, ""), token, accumulated, callback); }
+                    else callback.onSuccess(accumulated);
+                } catch (Exception e) { callback.onSuccess(accumulated); }
+            }
+            @Override public void onFailure(String msg) { if (accumulated.isEmpty()) callback.onFailure(msg); else callback.onSuccess(accumulated); }
+        });
     }
 
     @Override

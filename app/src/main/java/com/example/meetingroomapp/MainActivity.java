@@ -2,6 +2,10 @@ package com.example.meetingroomapp;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkRequest;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -48,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements DataChangeListene
     private RecyclerView rvMeetings;
     private ImageView refreshIndicator;
     private com.google.android.material.button.MaterialButton btnQuickBook;
+    private ConnectivityManager.NetworkCallback networkCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements DataChangeListene
         initRepository();
         burnInManager = new BurnInManager(); burnInManager.setListener(this); burnInManager.start();
         startClock();
+        registerNetworkCallback();
     }
 
     private void setupFullScreen() {
@@ -81,8 +87,17 @@ public class MainActivity extends AppCompatActivity implements DataChangeListene
         rvMeetings.setLayoutManager(new LinearLayoutManager(this)); rvMeetings.setAdapter(adapter);
         btnQuickBook.setOnClickListener(v -> {
             if (isNetworkError) { Toast.makeText(this, R.string.toast_network_error, Toast.LENGTH_LONG).show(); return; }
+            if (!isNextHourFree()) { Toast.makeText(this, R.string.toast_book_conflict, Toast.LENGTH_LONG).show(); return; }
             btnQuickBook.setEnabled(false); repository.performQuickBook();
         });
+    }
+
+    private boolean isNextHourFree() {
+        long now = System.currentTimeMillis();
+        for (MeetingInfo m : cachedMeetings) {
+            if (m.getStartTimestamp() < now + AppConfig.QUICK_BOOK_DURATION_MS && m.getEndTimestamp() > now) return false;
+        }
+        return true;
     }
 
     /** 根据平台类型创建对应的API实现 */
@@ -94,16 +109,29 @@ public class MainActivity extends AppCompatActivity implements DataChangeListene
     private void startClock() {
         clockHandler = new Handler(Looper.getMainLooper());
         clockHandler.postDelayed(new Runnable() {
-            @Override public void run() { tvCurrentTime.setText(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date())); clockHandler.postDelayed(this, 1000); }
+            @Override public void run() { if (!isFinishing()) { tvCurrentTime.setText(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date())); clockHandler.postDelayed(this, 1000); } }
         }, 0);
     }
 
-    @Override protected void onDestroy() { super.onDestroy(); if (repository != null) repository.stopPolling(); if (burnInManager != null) burnInManager.stop(); if (clockHandler != null) clockHandler.removeCallbacksAndMessages(null); }
+    private void registerNetworkCallback() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        if (cm == null) return;
+        networkCallback = new ConnectivityManager.NetworkCallback() {
+            @Override public void onAvailable(Network network) { runOnUiThread(() -> { isNetworkError = false; if (repository != null) repository.refreshData(); }); }
+            @Override public void onLost(Network network) { runOnUiThread(() -> { isNetworkError = true; setBanner(R.string.status_network_error, R.color.status_warning, 0x1Aff9800); setIndicatorColor(R.color.status_warning); }); }
+        };
+        cm.registerNetworkCallback(new NetworkRequest.Builder().addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET).build(), networkCallback);
+    }
+
+    @Override protected void onStart() { super.onStart(); if (repository != null) repository.startPolling(); }
+    @Override protected void onStop() { super.onStop(); if (repository != null) repository.stopPolling(); }
+    @Override protected void onDestroy() { if (networkCallback != null) { ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE); if (cm != null) cm.unregisterNetworkCallback(networkCallback); } if (repository != null) repository.stopPolling(); if (burnInManager != null) burnInManager.stop(); if (clockHandler != null) clockHandler.removeCallbacksAndMessages(null); super.onDestroy(); }
     @Override public boolean dispatchTouchEvent(MotionEvent ev) { if (burnInManager != null) burnInManager.onUserInteraction(); return super.dispatchTouchEvent(ev); }
 
     @Override
     public void onDataUpdated(List<MeetingInfo> meetings, MeetingInfo currentMeeting, boolean isFree) {
         runOnUiThread(() -> {
+            if (isFinishing()) return;
             cachedMeetings = meetings;
             updateCurrentMeetingDisplay(currentMeeting);
             adapter.setMeetings(meetings, currentMeeting);
@@ -139,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements DataChangeListene
     @Override
     public void onNetworkError() {
         runOnUiThread(() -> {
+            if (isFinishing()) return;
             isNetworkError = true;
             setBanner(R.string.status_network_error, R.color.status_warning, 0x1Aff9800);
             setIndicatorColor(R.color.status_warning);
@@ -149,18 +178,19 @@ public class MainActivity extends AppCompatActivity implements DataChangeListene
 
     @Override
     public void onAuthError(String message) {
-        runOnUiThread(() -> { setBanner(R.string.status_auth_error, R.color.status_error, 0x1AF44336); tvFreeStatus.setVisibility(View.VISIBLE); tvFreeStatus.setText(R.string.check_config); tvFreeStatus.setTextColor(getColor(R.color.status_error)); });
+        runOnUiThread(() -> { if (isFinishing()) return; setBanner(R.string.status_auth_error, R.color.status_error, 0x1AF44336); tvFreeStatus.setVisibility(View.VISIBLE); tvFreeStatus.setText(R.string.check_config); tvFreeStatus.setTextColor(getColor(R.color.status_error)); });
     }
 
     @Override
     public void onQuickBookResult(SimpleResult result) {
         runOnUiThread(() -> {
+            if (isFinishing()) return;
             if (result.isSuccess()) Toast.makeText(this, R.string.toast_book_success, Toast.LENGTH_LONG).show();
             else { Toast.makeText(this, result.getErrorMessage(), Toast.LENGTH_LONG).show(); btnQuickBook.setEnabled(true); }
         });
     }
 
-    @Override public void onApplyOffset(int x, int y) { runOnUiThread(() -> { if (rootView != null) { rootView.setTranslationX(x); rootView.setTranslationY(y); } }); }
+    @Override public void onApplyOffset(int x, int y) { runOnUiThread(() -> { if (isFinishing()) return; if (rootView != null) { rootView.setTranslationX(x); rootView.setTranslationY(y); } }); }
     @Override public void onSwitchStatusBarPosition(boolean toTop) { }
     @Override public void onEnterScreenSaver() { setBrightness(0.2f); }
     @Override public void onExitScreenSaver() { setBrightness(WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE); }
@@ -178,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements DataChangeListene
 
     private void setBanner(int textRes, int textColor, int bgColor) { tvStatusBanner.setText(textRes); tvStatusBanner.setTextColor(getColor(textColor)); tvStatusBanner.setBackgroundColor(bgColor); }
     private void setIndicatorColor(int colorRes) { if (refreshIndicator != null) refreshIndicator.setColorFilter(getColor(colorRes)); }
-    private void setBrightness(float value) { runOnUiThread(() -> { WindowManager.LayoutParams p = getWindow().getAttributes(); p.screenBrightness = value; getWindow().setAttributes(p); }); }
+    private void setBrightness(float value) { runOnUiThread(() -> { if (isFinishing()) return; WindowManager.LayoutParams p = getWindow().getAttributes(); p.screenBrightness = value; getWindow().setAttributes(p); }); }
     private void setText(View parent, int id, String text) { TextView tv = parent.findViewById(id); if (tv != null) tv.setText(text); }
     private String safeName(String name) { return name != null ? name : getString(R.string.anonymous); }
 }
