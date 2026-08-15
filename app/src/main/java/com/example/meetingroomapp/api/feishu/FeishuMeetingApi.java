@@ -5,7 +5,6 @@ import com.example.meetingroomapp.api.MeetingApi;
 import com.example.meetingroomapp.config.ConfigManager;
 import com.example.meetingroomapp.data.model.*;
 import com.google.gson.*;
-import android.util.Log;
 import okhttp3.*;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -68,8 +67,8 @@ public class FeishuMeetingApi extends BaseApiClient implements MeetingApi {
     /** 查询会议室是否存在 — code=0存在，121003/121004不存在 */
     private void checkRoomExists(String token, String roomId, ApiCallback<Boolean> cb) {
         get(ROOM_INFO_PATH + roomId, token, new ApiCallback<String>() {
-            @Override public void onSuccess(String result) { Log.d("FeishuApi", "checkRoom: " + result); int code = parseCode(result); if (code == 0) cb.onSuccess(true); else if (code == 121003 || code == 121004) cb.onSuccess(false); else cb.onFailure("查询会议室失败"); }
-            @Override public void onFailure(String msg) { Log.d("FeishuApi", "checkRoom fail: " + msg); int code = parseCode(msg); if (code == 121003 || code == 121004) cb.onSuccess(false); else cb.onFailure(msg); }
+            @Override public void onSuccess(String result) { int code = parseCode(result); if (code == 0) cb.onSuccess(true); else if (code == 121003 || code == 121004) cb.onSuccess(false); else cb.onFailure("查询会议室失败"); }
+            @Override public void onFailure(String msg) { int code = parseCode(msg); if (code == 121003 || code == 121004) cb.onSuccess(false); else cb.onFailure(msg); }
         });
     }
 
@@ -86,7 +85,6 @@ public class FeishuMeetingApi extends BaseApiClient implements MeetingApi {
             String url = FREEBUSY_PATH + "?room_ids=" + URLEncoder.encode(roomId, "UTF-8") + "&time_min=" + URLEncoder.encode(fmt.format(new Date(timeMin * 1000)) + "+08:00", "UTF-8") + "&time_max=" + URLEncoder.encode(fmt.format(new Date(timeMax * 1000)) + "+08:00", "UTF-8");
             get(url, token, new ApiCallback<String>() {
                 @Override public void onSuccess(String result) {
-                    Log.d("FeishuApi", "freebusy: " + result);
                     try { JsonObject json = JsonParser.parseString(result).getAsJsonObject(); int code = json.has("code") ? json.get("code").getAsInt() : -1; if (code != 0) { callback.onFailure("忙闲查询失败: " + (json.has("msg") ? json.get("msg").getAsString() : "查询失败")); return; } List<MeetingInfo> meetings = parseFreeBusyEvents(json); if (meetings.isEmpty()) callback.onSuccess(meetings); else querySummaries(token, meetings, callback); }
                     catch (Exception e) { callback.onFailure("解析忙闲数据失败"); }
                 }

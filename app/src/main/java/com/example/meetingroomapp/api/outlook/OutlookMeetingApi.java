@@ -25,10 +25,13 @@ public class OutlookMeetingApi extends BaseApiClient implements MeetingApi {
     private void postForm(String url, String body, ApiCallback<String> cb) { executeWithRetry(new Request.Builder().url(url).post(RequestBody.create(body, FORM_TYPE)).addHeader("Content-Type", "application/x-www-form-urlencoded").build(), cb); }
 
     private void getAccessToken(String clientId, String clientSecret, String tenantId, ApiCallback<TokenResult> cb) {
-        postForm(String.format(AppConfig.GRAPH_AUTH_URL_TEMPLATE, tenantId), "grant_type=client_credentials&client_id=" + clientId + "&client_secret=" + clientSecret + "&scope=" + AppConfig.GRAPH_SCOPE, new ApiCallback<String>() {
+        try {
+            String body = "grant_type=client_credentials&client_id=" + URLEncoder.encode(clientId, "UTF-8") + "&client_secret=" + URLEncoder.encode(clientSecret, "UTF-8") + "&scope=" + URLEncoder.encode(AppConfig.GRAPH_SCOPE, "UTF-8");
+            postForm(String.format(AppConfig.GRAPH_AUTH_URL_TEMPLATE, tenantId), body, new ApiCallback<String>() {
             @Override public void onSuccess(String result) { try { JsonObject json = JsonParser.parseString(result).getAsJsonObject(); if (json.has("access_token")) cb.onSuccess(TokenResult.ok(json.get("access_token").getAsString(), json.has("expires_in") ? json.get("expires_in").getAsInt() : 3600)); else cb.onSuccess(TokenResult.err("认证失败: " + (json.has("error") ? json.get("error").getAsString() : "unknown") + " - " + (json.has("error_description") ? json.get("error_description").getAsString() : ""))); } catch (Exception e) { cb.onSuccess(TokenResult.err("解析认证响应失败")); } }
             @Override public void onFailure(String msg) { cb.onFailure(msg); }
         });
+        } catch (Exception e) { cb.onFailure("构建认证请求失败: " + e.getMessage()); }
     }
 
     @Override

@@ -79,3 +79,7 @@ app/src/main/java/com/example/meetingroomapp/
 ## 开源协议
 
 MIT License - 详见 [LICENSE](LICENSE)
+
+## AI 生成声明
+
+本项目的初始代码由 AI 辅助生成，并经过人工审查和修改。所有代码在发布前均经过功能验证和安全审查。
