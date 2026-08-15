@@ -80,6 +80,10 @@ app/src/main/java/com/example/meetingroomapp/
 
 MIT License - 详见 [LICENSE](LICENSE)
 
+## 免责声明
+
+本项目为独立开发的第三方工具，与飞书（字节跳动）、Microsoft Outlook/Azure 无任何关联、授权或背书关系。"飞书"和"Outlook"等名称仅用于指明所兼容的平台，其商标归各自所有者所有。
+
 ## AI 生成声明
 
 本项目的初始代码由 AI 辅助生成，并经过人工审查和修改。所有代码在发布前均经过功能验证和安全审查。
